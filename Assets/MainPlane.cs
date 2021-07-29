@@ -15,10 +15,6 @@ public class MainPlane : MonoBehaviour
 	public Canvas FirstPersonCanvas;
 	Camera ThirdPersonCam;
 
-	// URL para el POST y GET
-	//readonly string getURL = "http://ec2-3-17-189-111.us-east-2.compute.amazonaws.com/GETSimulador.php";
-	readonly string postURL = "http://ec2-3-17-189-111.us-east-2.compute.amazonaws.com/POSTSimulador.php";
-
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -91,8 +87,6 @@ public class MainPlane : MonoBehaviour
 			string yAngle = "G" + yValue.ToString("G", CultureInfo.InvariantCulture);
 			string zAngle = "G" + zValue.ToString("G", CultureInfo.InvariantCulture);
 
-			// StartCoroutine(SimplePostRequest(xAngle, yAngle, zAngle));
-
 			UnityEngine.Debug.Log("x:" + xAngle + " y:" + yAngle + " z:" + zAngle);
 			elapsed %= 1f;
 		}
@@ -101,23 +95,6 @@ public class MainPlane : MonoBehaviour
 		if (terrainHeightWhereWeAre > transform.position.y)
 		{
 			transform.position = new Vector3(transform.position.x, terrainHeightWhereWeAre + 2, transform.position.z);
-		}
-	}
-
-	IEnumerator SimplePostRequest(string xAngle, string yAngle, string zAngle)
-	{
-		List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-		wwwForm.Add(new MultipartFormDataSection("xValue", xAngle));
-		wwwForm.Add(new MultipartFormDataSection("yValue", yAngle));
-		wwwForm.Add(new MultipartFormDataSection("zValue", zAngle));
-
-		UnityWebRequest www = UnityWebRequest.Post(postURL, wwwForm);
-
-		yield return www.SendWebRequest();
-
-		if (www.isNetworkError || www.isHttpError)
-		{
-			UnityEngine.Debug.Log(www.error);
 		}
 	}
 }
